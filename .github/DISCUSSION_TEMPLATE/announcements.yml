@@ -1,0 +1,43 @@
+title: "[Announcement] "
+labels: ["announcement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for announcements posted by maintainers (release
+        notes, breaking changes, infrastructure updates, community news).
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Announcement type
+      options:
+        - Release
+        - Breaking change
+        - Security advisory
+        - Project status / roadmap
+        - Community / event
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One-paragraph TL;DR for readers who only skim.
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+    validations:
+      required: true
+
+  - type: textarea
+    id: action
+    attributes:
+      label: Action required
+      description: What, if anything, should consumers of this template do?

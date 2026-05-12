@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+title: Browser Extension Template
+message: >-
+  If you use this template in academic work or in a publicly released
+  derivative project, please cite it as below.
+type: software
+authors:
+  - alias: SkullMute
+    given-names: SkullMute
+    website: https://github.com/poli0981
+repository-code: https://github.com/poli0981/template-browser-extension
+url: https://github.com/poli0981/template-browser-extension
+abstract: >-
+  Production-grade GitHub template for cross-browser Manifest V3 browser
+  extensions targeting Chromium browsers (Chrome, Edge, Brave). Built on
+  TypeScript 5.7 and Vite 8 with Node.js 24 LTS, including full CI/CD,
+  CodeQL v4 scanning, Dependabot, release-please automation, and
+  bilingual (EN/VI) documentation.
+keywords:
+  - browser-extension
+  - chrome-extension
+  - manifest-v3
+  - mv3
+  - typescript
+  - vite
+  - github-template
+license: NOASSERTION

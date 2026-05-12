@@ -17,6 +17,9 @@ permissions:
 
 jobs:
   announce:
+    # Skip drafts; pre-releases are still announced (the reusable workflow
+    # can label them differently).
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.release.draft == false }}
     uses: poli0981/.github/.github/workflows/announce-release.yml@main
     with:
       tag_override: ${{ inputs.tag || '' }}

@@ -1,0 +1,41 @@
+name: Lockfile check
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "package.json"
+      - "pnpm-lock.yaml"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: package.json ↔ pnpm-lock.yaml consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Verify pnpm-lock.yaml is in sync with package.json
+        run: pnpm install --frozen-lockfile --lockfile-only
+
+      - name: Warn on lockfile-only PRs
+        if: github.event.pull_request.changed_files == 1
+        run: |
+          set -euo pipefail
+          CHANGED=$(gh pr view "${{ github.event.pull_request.number }}" --json files --jq '.files[].path')
+          if [ "$CHANGED" = "pnpm-lock.yaml" ]; then
+            echo "::warning::This PR only modifies pnpm-lock.yaml. Was that intentional?"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

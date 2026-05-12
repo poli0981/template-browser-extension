@@ -1,0 +1,10 @@
+{
+  "extension_name": {
+    "message": "Browser Extension Template",
+    "description": "Tên extension hiển thị trên giao diện trình duyệt và Web Store."
+  },
+  "extension_description": {
+    "message": "Template production-grade để xây extension MV3 đa trình duyệt với TypeScript và Vite.",
+    "description": "Mô tả ngắn hiển thị trên giao diện trình duyệt và Web Store."
+  }
+}

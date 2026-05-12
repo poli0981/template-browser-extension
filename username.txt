@@ -1,0 +1,52 @@
+About the Author
+================
+
+Handle:    SkullMute
+GitHub:    https://github.com/poli0981
+
+Public social
+-------------
+X / Twitter:  https://x.com/SkullMute0011         (@SkullMute0011)
+YouTube:      https://youtube.com/@SkullMute       (@SkullMute)
+Bluesky:      https://bsky.app/profile/skullmute0011.bsky.social
+Mastodon:     https://mastodon.social/@skullmute1122
+Steam:        https://steamcommunity.com/profiles/76561199544666292/
+
+Discord
+-------
+Repo server (#general):   https://discord.gg/2aNR3aVt
+Game server (#general):   https://discord.gg/kDM9GMu5vm
+
+Sponsorship / funding
+---------------------
+GitHub Sponsors:    https://github.com/sponsors/poli0981
+Ko-fi:              https://ko-fi.com/skullmute
+Buy Me a Coffee:    https://buymeacoffee.com/skullmute
+Patreon:            https://patreon.com/skullmute
+PayPal:             https://paypal.me/DungDang212
+
+Contact for security or private matters
+---------------------------------------
+Email (preferred):  lopop05905@proton.me
+Subject prefix:     [SECURITY] for vulnerability reports
+
+GitHub Security Advisory (recommended for vulnerabilities):
+  https://github.com/poli0981/template-browser-extension/security/advisories/new
+
+Note on Telegram
+----------------
+Telegram bot and Telegram user account exist but are NOT listed publicly
+here, per the project's security policy. If you have the maintainer's
+Telegram contact from a prior private channel, you may DM directly — but
+do not paste the username or User ID in any public issue, PR, Discussion,
+screenshot, or social post. See SECURITY.md for the disclosure procedure.
+
+Developer environment
+---------------------
+GitHub username:    poli0981
+IDE:                JetBrains 2026.x lineup (PyCharm, WebStorm, RustRover,
+                    Rider — paid licenses) + VS Code
+Toolchains:         Python 3.12, Node.js >= 22, Rust stable, Tauri 2
+Hardware:           See spec.txt
+Dev docs:           docs/dev_env.md (EN), docs/i18n/vi/dev_env.md (VI)
+PC spec docs:       docs/pc_spec.md (EN), docs/i18n/vi/pc_spec.md (VI)
