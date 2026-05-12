@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Options</title>
+    <link rel="stylesheet" href="./options.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Extension Options</h1>
+      <form id="options-form">
+        <label>
+          Setting example:
+          <input id="setting-input" name="setting" type="text" />
+        </label>
+        <button type="submit">Save</button>
+      </form>
+      <p id="status" aria-live="polite"></p>
+    </main>
+    <script type="module" src="./options.ts"></script>
+  </body>
+</html>

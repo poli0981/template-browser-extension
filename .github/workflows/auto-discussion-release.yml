@@ -1,0 +1,58 @@
+name: Auto-create Discussion on Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  discussions: write
+
+jobs:
+  create-discussion:
+    name: Post release announcement to Discussions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Discussion via GraphQL
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_BODY: ${{ github.event.release.body }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
+          IS_PRERELEASE: ${{ github.event.release.prerelease }}
+        run: |
+          set -euo pipefail
+
+          # Find the repository's "Announcements" category id (created by GitHub when Discussions is enabled).
+          CATEGORY_ID=$(gh api graphql \
+            -F owner="${{ github.repository_owner }}" \
+            -F repo="${{ github.event.repository.name }}" \
+            -f query='query($owner:String!,$repo:String!){repository(owner:$owner,name:$repo){discussionCategories(first:25){nodes{id name}}}}' \
+            --jq '.data.repository.discussionCategories.nodes[] | select(.name=="Announcements") | .id')
+
+          if [ -z "$CATEGORY_ID" ]; then
+            echo "::warning::No 'Announcements' Discussion category found. Enable Discussions and create the category, then re-run."
+            exit 0
+          fi
+
+          REPO_ID=$(gh api graphql \
+            -F owner="${{ github.repository_owner }}" \
+            -F repo="${{ github.event.repository.name }}" \
+            -f query='query($owner:String!,$repo:String!){repository(owner:$owner,name:$repo){id}}' \
+            --jq '.data.repository.id')
+
+          PRERELEASE_NOTE=""
+          if [ "$IS_PRERELEASE" = "true" ]; then
+            PRERELEASE_NOTE="> ⚠️ This is a **pre-release**. Expect rough edges.\n\n"
+          fi
+
+          TITLE="🚀 ${RELEASE_NAME:-$RELEASE_TAG}"
+          BODY="${PRERELEASE_NOTE}A new release is out — [view on GitHub](${RELEASE_URL}).\n\n---\n\n${RELEASE_BODY:-_No release notes provided._}"
+
+          gh api graphql \
+            -F repoId="$REPO_ID" \
+            -F categoryId="$CATEGORY_ID" \
+            -F title="$TITLE" \
+            -F body="$BODY" \
+            -f query='mutation($repoId:ID!,$categoryId:ID!,$title:String!,$body:String!){createDiscussion(input:{repositoryId:$repoId,categoryId:$categoryId,title:$title,body:$body}){discussion{url}}}'

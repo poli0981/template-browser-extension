@@ -1,0 +1,120 @@
+name: 🐛 Bug report
+description: Report a reproducible defect in the extension or its build.
+title: "[bug]: "
+labels: ["bug", "triage"]
+assignees:
+  - poli0981
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report! Please fill in the
+        sections below — incomplete reports often get stuck in triage.
+
+        **Security issues**: do NOT use this form. Open a
+        [private advisory](https://github.com/poli0981/template-browser-extension/security/advisories/new)
+        or email `lopop05905@proton.me` with subject `[SECURITY]`.
+
+  - type: checkboxes
+    id: prechecks
+    attributes:
+      label: Pre-checks
+      options:
+        - label: I searched [existing issues](https://github.com/poli0981/template-browser-extension/issues?q=is%3Aissue) and this is not a duplicate.
+          required: true
+        - label: I am running the latest release (or `main`) and can still reproduce.
+          required: true
+        - label: This is NOT a security vulnerability (those go via private advisory).
+          required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Extension version
+      description: e.g. `0.1.0` — see the extension's options page or `manifest.json`.
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      multiple: true
+      options:
+        - Chrome
+        - Microsoft Edge
+        - Brave
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: input
+    id: browser-version
+    attributes:
+      label: Browser version
+      description: e.g. `Chrome 138.0.7204.50`
+      placeholder: "Chrome 138.0.7204.50"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS
+        - Linux (specify distro in description)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: List the EXACT steps. Include URLs visited if relevant.
+      placeholder: |
+        1. Install the extension via `Load unpacked` from `dist/`
+        2. Open `chrome://extensions` and click the extension's popup
+        3. Click "Ping background"
+        4. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console / service-worker logs
+      description: |
+        From `chrome://extensions` → click "Errors" or "Inspect views: service worker".
+        Use code fences. Redact any personal data.
+      render: shell
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / video
+      description: Drag-drop. A short GIF of the broken behavior is gold.
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context

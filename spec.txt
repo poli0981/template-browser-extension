@@ -1,0 +1,48 @@
+PC Spec & Software (Maintainer's Machine)
+=========================================
+
+This describes the maintainer's primary development machine. It applies to
+all of the maintainer's projects, not just this template. Numbers reflect
+the hardware/software available to the maintainer for local testing — they
+are NOT a minimum requirement for using this template (the template runs
+on any Node.js 24 LTS environment).
+
+Developer Machine (Primary)
+---------------------------
+| Component | Details                                              |
+|-----------|------------------------------------------------------|
+| OS        | Windows 11 Pro 25H2 Insider Preview (Dev Channel)    |
+| Build     | 26300.8376                                           |
+| CPU       | Intel Core i7-14700KF                                |
+| GPU       | NVIDIA GeForce RTX 5080 (16 GB VRAM)                 |
+| RAM       | 32 GB DDR5                                           |
+| Storage   | 1 TB SSD                                             |
+| IDE       | JetBrains 2026.x (paid) + VS Code                    |
+
+Mobile devices used for cross-browser web/extension QA
+------------------------------------------------------
+- iPhone 14 Pro       — iOS 26.x — Chrome, Brave
+- iPhone 13 Pro Max   — iOS 26.x — Chrome, Brave
+
+Toolchain versions (local installs; template's hard requirement is `engines`)
+----------------------------------------------------------------------------
+- Python              3.12.x, 3.14.x
+- Node.js             >= 25.8.1 (local); template `engines.node` >= 24.0.0
+- pnpm                10.x
+- Rust                stable (via rustup)
+- Git                 recent; GPG signing enabled (commit.gpgsign=true)
+- .NET                8.x, 9.x, 10.x, 11.x (PREVIEW)
+
+Repo dev environment documentation
+----------------------------------
+- docs/pc_spec.md                  — public-facing version of this spec (EN)
+- docs/dev_env.md                  — IDE + language toolchains + dev workflow (EN)
+- docs/i18n/vi/pc_spec.md          — Vietnamese mirror
+- docs/i18n/vi/dev_env.md          — Vietnamese mirror
+
+Notes
+-----
+- Toolchain versions for projects using newer/preview runtimes will be
+  added here as those projects ship.
+- Browser web stores' MV3 sandbox is the actual security boundary; local
+  hardware spec does not change extension behavior.

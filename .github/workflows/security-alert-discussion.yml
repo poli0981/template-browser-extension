@@ -1,0 +1,107 @@
+name: Auto-create Discussion on Critical Security Alert
+
+# Triggered when a repository security advisory is published, or manually
+# when a maintainer wants to mirror a Dependabot/CodeQL alert into Discussions.
+on:
+  repository_advisory:
+    types: [published, reported]
+  workflow_dispatch:
+    inputs:
+      advisory_summary:
+        description: "Summary line for the Discussion"
+        required: true
+        type: string
+      severity:
+        description: "Severity"
+        required: true
+        type: choice
+        options: [critical, high, medium, low]
+      advisory_url:
+        description: "URL to the advisory (Dependabot/CodeQL/GHSA)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  discussions: write
+  security-events: read
+
+jobs:
+  create-discussion:
+    name: Post security advisory to Discussions
+    if: |
+      github.event_name == 'workflow_dispatch'
+      || (github.event_name == 'repository_advisory'
+          && contains(fromJSON('["critical","high"]'), github.event.repository_advisory.severity))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve inputs
+        id: resolve
+        env:
+          ADV_SUMMARY: ${{ github.event.repository_advisory.summary || inputs.advisory_summary }}
+          ADV_SEVERITY: ${{ github.event.repository_advisory.severity || inputs.severity }}
+          ADV_URL: ${{ github.event.repository_advisory.html_url || inputs.advisory_url }}
+          ADV_DESCRIPTION: ${{ github.event.repository_advisory.description || '' }}
+        run: |
+          {
+            echo "summary=$ADV_SUMMARY"
+            echo "severity=$ADV_SEVERITY"
+            echo "url=$ADV_URL"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo "description<<EOF"
+            echo "$ADV_DESCRIPTION"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create Discussion via GraphQL
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SUMMARY: ${{ steps.resolve.outputs.summary }}
+          SEVERITY: ${{ steps.resolve.outputs.severity }}
+          URL: ${{ steps.resolve.outputs.url }}
+          DESCRIPTION: ${{ steps.resolve.outputs.description }}
+        run: |
+          set -euo pipefail
+
+          # Prefer a "Security" category if it exists, fall back to "Announcements".
+          CATEGORY_ID=$(gh api graphql \
+            -F owner="${{ github.repository_owner }}" \
+            -F repo="${{ github.event.repository.name }}" \
+            -f query='query($owner:String!,$repo:String!){repository(owner:$owner,name:$repo){discussionCategories(first:25){nodes{id name}}}}' \
+            --jq '
+              .data.repository.discussionCategories.nodes
+              | (map(select(.name=="Security")) + map(select(.name=="Announcements")))
+              | .[0].id // empty
+            ')
+
+          if [ -z "$CATEGORY_ID" ]; then
+            echo "::warning::No 'Security' or 'Announcements' Discussion category found."
+            exit 0
+          fi
+
+          REPO_ID=$(gh api graphql \
+            -F owner="${{ github.repository_owner }}" \
+            -F repo="${{ github.event.repository.name }}" \
+            -f query='query($owner:String!,$repo:String!){repository(owner:$owner,name:$repo){id}}' \
+            --jq '.data.repository.id')
+
+          UPPER_SEV=$(echo "$SEVERITY" | tr '[:lower:]' '[:upper:]')
+          TITLE="🔒 [${UPPER_SEV}] ${SUMMARY}"
+          BODY="A new ${SEVERITY}-severity security advisory has been published for this repository.
+
+**Advisory:** ${URL:-_link pending_}
+
+${DESCRIPTION:-_See linked advisory for details._}
+
+---
+
+Please update to the latest released version when a fix is available.
+Report any further concerns via a [private advisory](https://github.com/${{ github.repository }}/security/advisories/new)."
+
+          gh api graphql \
+            -F repoId="$REPO_ID" \
+            -F categoryId="$CATEGORY_ID" \
+            -F title="$TITLE" \
+            -F body="$BODY" \
+            -f query='mutation($repoId:ID!,$categoryId:ID!,$title:String!,$body:String!){createDiscussion(input:{repositoryId:$repoId,categoryId:$categoryId,title:$title,body:$body}){discussion{url}}}'

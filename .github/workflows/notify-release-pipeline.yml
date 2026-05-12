@@ -1,8 +1,14 @@
 name: Notify Release Pipeline
 
+# IMPORTANT: workflow_run does NOT accept wildcard workflow names. The previous
+# version (`workflows: ["*"]`) caused every run to be skipped silently because
+# the trigger never matched. List concrete release-related workflow names here.
 on:
   workflow_run:
-    workflows: ["*"]
+    workflows:
+      - release-please
+      - "Announce Release to Discord"
+      - "Auto-create Discussion on Release"
     types: [completed]
 
 permissions:
@@ -11,5 +17,8 @@ permissions:
 
 jobs:
   notify:
+    # Only run when the upstream pipeline finished (any conclusion). Filtering
+    # by specific conclusions happens in the reusable workflow.
+    if: ${{ github.event.workflow_run.conclusion != null }}
     uses: poli0981/.github/.github/workflows/notify-release-pipeline.yml@main
     secrets: inherit

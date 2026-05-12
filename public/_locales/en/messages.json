@@ -1,0 +1,10 @@
+{
+  "extension_name": {
+    "message": "Browser Extension Template",
+    "description": "Extension name shown in browser UI and Web Store listing."
+  },
+  "extension_description": {
+    "message": "A production-grade template for building cross-browser MV3 extensions with TypeScript and Vite.",
+    "description": "Short description shown in browser UI and Web Store listing."
+  }
+}

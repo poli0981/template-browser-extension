@@ -1,0 +1,46 @@
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ask the community. For bug reports use [issues](https://github.com/poli0981/template-browser-extension/issues/new/choose).
+        For security vulnerabilities use a [private advisory](https://github.com/poli0981/template-browser-extension/security/advisories/new).
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What you've already tried
+      description: Helps responders skip suggestions you've ruled out.
+
+  - type: input
+    id: version
+    attributes:
+      label: Template version (or commit SHA)
+      placeholder: "0.1.0 or abc1234"
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Setup / install
+        - Build / Vite
+        - TypeScript types
+        - MV3 / manifest
+        - Service worker behavior
+        - chrome.* APIs
+        - Workflows / CI
+        - release-please
+        - i18n
+        - Other
+    validations:
+      required: true

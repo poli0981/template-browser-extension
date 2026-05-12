@@ -1,0 +1,64 @@
+name: 💬 Feedback
+description: General feedback, suggestions, or impressions that aren't a bug or a feature request.
+title: "[feedback]: "
+labels: ["feedback"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Got thoughts that don't quite fit a bug or feature request? Drop
+        them here. For open-ended conversation, also consider
+        [Discussions](https://github.com/poli0981/template-browser-extension/discussions).
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type of feedback
+      options:
+        - General impression / "first run" experience
+        - Documentation feedback
+        - Naming / API ergonomics
+        - Workflow / DX
+        - Onboarding / template discoverability
+        - Performance impression
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: message
+    attributes:
+      label: Your feedback
+      description: Plain language is fine. Be specific where you can.
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-helped
+    attributes:
+      label: What worked well?
+      description: (Optional) Reinforces what to keep.
+
+  - type: textarea
+    id: what-tripped
+    attributes:
+      label: What tripped you up?
+      description: (Optional) Specific moments where you got stuck.
+
+  - type: input
+    id: contact
+    attributes:
+      label: Contact (optional)
+      description: |
+        How to reach you for follow-up. **Do not paste maintainer's Telegram User ID
+        here** — see SECURITY.md. Public socials are fine.
+      placeholder: e.g. @yourhandle on X / Discord username
+
+  - type: checkboxes
+    id: confidential
+    attributes:
+      label: Public visibility
+      options:
+        - label: I understand this issue is public. If my feedback contains anything sensitive, I will email `lopop05905@proton.me` instead.
+          required: true

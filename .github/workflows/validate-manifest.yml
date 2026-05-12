@@ -1,0 +1,73 @@
+name: Validate manifest
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "manifest.json"
+      - "package.json"
+      - "vite.config.ts"
+      - "src/**"
+  push:
+    branches: [main]
+    paths:
+      - "manifest.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate MV3 manifest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Verify manifest_version is 3
+        run: |
+          set -euo pipefail
+          MV=$(jq -r '.manifest_version' manifest.json)
+          if [ "$MV" != "3" ]; then
+            echo "::error file=manifest.json::manifest_version must be 3 (got '$MV'). MV2 is no longer accepted by Chrome."
+            exit 1
+          fi
+
+      - name: Verify version is semver
+        run: |
+          set -euo pipefail
+          VERSION=$(jq -r '.version' manifest.json)
+          if ! echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+(\.[0-9]+)?(\.[0-9]+)?$'; then
+            echo "::error file=manifest.json::version '$VERSION' is not a valid Chrome extension version (1-4 dot-separated integers)."
+            exit 1
+          fi
+
+      - name: Verify manifest.version matches package.json.version
+        run: |
+          set -euo pipefail
+          MV=$(jq -r '.version' manifest.json)
+          PV=$(jq -r '.version' package.json)
+          if [ "$MV" != "$PV" ]; then
+            echo "::error::manifest.json version ($MV) != package.json version ($PV). release-please should keep these in sync."
+            exit 1
+          fi
+
+      - name: Verify required keys
+        run: |
+          set -euo pipefail
+          for key in name description version action background icons; do
+            VALUE=$(jq --arg k "$key" '.[$k] // empty' manifest.json)
+            if [ -z "$VALUE" ]; then
+              echo "::error file=manifest.json::missing required key '$key'"
+              exit 1
+            fi
+          done
+
+      - name: Verify no remote scripts in CSP
+        run: |
+          set -euo pipefail
+          CSP=$(jq -r '.content_security_policy.extension_pages // ""' manifest.json)
+          if echo "$CSP" | grep -Eqi "(http:|https:)"; then
+            echo "::error file=manifest.json::CSP must not allow remote scripts."
+            exit 1
+          fi

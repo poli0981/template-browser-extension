@@ -1,0 +1,19 @@
+# CODEOWNERS — auto-request review when paths change.
+# Docs: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+* @poli0981
+
+# Workflows / CI — additional scrutiny when changed
+/.github/ @poli0981
+/.github/workflows/ @poli0981
+
+# Security policy — only the maintainer
+/SECURITY.md @poli0981
+/legal/ @poli0981
+
+# Manifest / build configuration — gate against accidental MV3 regressions
+/manifest.json @poli0981
+/vite.config.ts @poli0981
+/tsconfig.json @poli0981
+/package.json @poli0981
