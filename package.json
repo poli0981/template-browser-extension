@@ -45,8 +45,8 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.6.0",
+    "@commitlint/cli": "^21.0.0",
+    "@commitlint/config-conventional": "^21.0.0",
     "@crxjs/vite-plugin": "^2.0.0",
     "@types/chrome": "^0.0.290",
     "@types/node": "^24.0.0",
@@ -57,7 +57,7 @@
     "eslint-plugin-import": "^2.31.0",
     "globals": "^15.14.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.0",
+    "lint-staged": "^17.0.4",
     "prettier": "^3.4.2",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0",
