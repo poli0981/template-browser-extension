@@ -9,6 +9,13 @@ This file is **maintained automatically** by [release-please](https://github.com
 based on [Conventional Commits](https://www.conventionalcommits.org/) messages.
 Manual edits will be overwritten.
 
+## [0.1.1](https://github.com/poli0981/template-browser-extension/compare/v0.1.0...v0.1.1) (2026-06-23)
+
+
+### Features
+
+* scaffold production-grade browser extension template for 2026 ([#1](https://github.com/poli0981/template-browser-extension/issues/1)) ([b1ee55f](https://github.com/poli0981/template-browser-extension/commit/b1ee55ffd06f777b36111ef155b39c12b8b5957b))
+
 ## [Unreleased]
 
 ### Added

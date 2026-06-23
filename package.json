@@ -1,6 +1,6 @@
 {
   "name": "browser-extension-template",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Production-grade GitHub template for cross-browser MV3 extensions (Chrome/Edge/Brave) — TypeScript + Vite 8, Node 24 LTS. Ready for 2026.",
   "type": "module",
